@@ -25,4 +25,9 @@ register_fprime_config(
    GLOBAL_IMPLICIT_DEPENDENCY
 )
 target_compile_definitions(PlatformDarwin INTERFACE -DTGT_OS_TYPE_DARWIN)
-target_link_options(PlatformDarwin INTERFACE -Wl,-no_warn_duplicate_libraries)
+include(CheckLinkerFlag)
+check_linker_flag(CXX "-Wl,-no_warn_duplicate_libraries" FPRIME_HAS_NO_WARN_DUPLICATE_LIBRARIES)
+
+if(FPRIME_HAS_NO_WARN_DUPLICATE_LIBRARIES)
+    target_link_options(PlatformDarwin INTERFACE -Wl,-no_warn_duplicate_libraries)
+endif()
